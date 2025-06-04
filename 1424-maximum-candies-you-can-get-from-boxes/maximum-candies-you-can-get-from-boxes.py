@@ -1,44 +1,33 @@
-from collections import deque
-from typing import List
-
 class Solution:
-    def maxCandies(
-        self,
-        status: List[int],
-        candies: List[int],
-        keys: List[List[int]],
-        containedBoxes: List[List[int]],
-        initialBoxes: List[int]
-    ) -> int:
+    def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+        n= len(status)
 
-        owned_boxes   = set(initialBoxes)                 # boxes we physically hold
-        owned_keys    = set()                             # keys collected so far
-        processed     = set()                             # boxes already opened
-        q = deque(b for b in initialBoxes if status[b])   # start with the open ones
+        q= deque(initialBoxes)
+        closed = set()
 
-        total = 0
+        total =0
 
         while q:
-            box = q.popleft()
-            if box in processed:
+            curr=q.popleft()
+
+            if status[curr] ==0:
+                closed.add(curr)
                 continue
-            processed.add(box)
 
-            # collect candies
-            total += candies[box]
+            for open in keys[curr]:
+                status[open] = 1
+                if open in closed:
+                    q.append(open)
+                    closed.remove(open)
 
-            # gather keys found inside this box
-            for k in keys[box]:
-                if k not in owned_keys:
-                    owned_keys.add(k)
-                    if k in owned_boxes and k not in processed:
-                        q.append(k)
+            total += candies[curr]
+            for nbr in containedBoxes[curr]:
+                q.append(nbr)
 
-            # gather boxes found inside this box
-            for inner in containedBoxes[box]:
-                if inner not in owned_boxes:
-                    owned_boxes.add(inner)
-                if (status[inner] == 1 or inner in owned_keys) and inner not in processed:
-                    q.append(inner)
 
-        return total
+        return total 
+
+
+        
+
+        
