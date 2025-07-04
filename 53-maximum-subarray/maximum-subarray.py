@@ -3,12 +3,14 @@ class Solution:
         max_sum = nums[0]
         curr_sum =0
 
-        for n in nums:
-            if curr_sum<0:
-                curr_sum=0
-            curr_sum+=n
+        #[-2,-1,]
 
-            max_sum = max(max_sum, curr_sum)
+        for n in nums: #-2, -1
+            if curr_sum<0:
+                curr_sum=0 #0
+            curr_sum+=n # -1
+
+            max_sum = max(max_sum, curr_sum) #-1
 
         return max_sum
 
