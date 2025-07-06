@@ -1,12 +1,14 @@
 class Solution:
-    def findLucky(self, arr: list[int]) -> int:
-        from collections import Counter
+    def findLucky(self, arr: List[int]) -> int:
+        freq={}
+        res= -1 
 
-        freq = Counter(arr)
-        lucky = -1
+        for n in arr:
+            freq[n] = 1+ freq.get(n,0)
 
-        for num, count in freq.items():
-            if num == count:
-                lucky = max(lucky, num)
+        for k,v in freq.items():
+            if k==v:
+                res = max(res, k)
 
-        return lucky
+        return res 
+        
